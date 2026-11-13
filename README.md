@@ -1,8 +1,8 @@
-# CMG ATLAS Connect Plugin
+# CMG Connect
 
 Cross-grid chat, scheduled announcements, MOTDs, rules, invite links and Discord relays.
 
-This Chaotic Minds Gaming (CMG)-specific plugin extends [CMG Core](https://github.com/Chaotic-Minds-Collective/chaotic-minds-gaming-atlas-core) and the [ATLAS integration adapter](https://github.com/Chaotic-Minds-Collective/chaotic-minds-gaming-atlas); it does not replace either foundation.
+This Chaotic Minds Gaming-specific module extends [Chaotic Gaming Core](https://github.com/Chaotic-Minds-Collective/chaotic-gaming-core) and the [ATLAS integration adapter](https://github.com/Chaotic-Minds-Collective/chaotic-gaming-atlas); it does not replace either foundation.
 
 ## Feature scope
 - Global/grid chat with origin labels
@@ -15,7 +15,7 @@ This Chaotic Minds Gaming (CMG)-specific plugin extends [CMG Core](https://githu
 ## Architecture and dependencies
 - Core identity, scoped RBAC, server registry and outbox
 - ATLAS adapter: verified connect/disconnect/chat callbacks
-- CMG ATLAS Tribes for membership
+- CMG Tribes for membership
 - Discord service integration; Discord roles are not Core permissions
 
 Core remains authoritative for shared identity, authorization and platform records. ATLAS-native calls pass through the shared adapter. This module owns its domain state and must not connect directly to PostgreSQL.

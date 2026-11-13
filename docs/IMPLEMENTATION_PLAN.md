@@ -1,4 +1,4 @@
-# CMG ATLAS Connect Plugin — Implementation Plan
+# CMG Connect — Implementation Plan
 
 ## Purpose
 Cross-grid chat, scheduled announcements, MOTDs, rules, invite links and Discord relays.
