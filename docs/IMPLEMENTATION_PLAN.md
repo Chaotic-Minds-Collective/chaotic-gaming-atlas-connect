@@ -14,7 +14,7 @@ Cross-grid chat, scheduled announcements, MOTDs, rules, invite links and Discord
 ## Dependencies
 - Core identity, scoped RBAC, server registry and outbox
 - ATLAS adapter: verified connect/disconnect/chat callbacks
-- CG Tribes for membership
+- CMG ATLAS Tribes for membership
 - Discord service integration; Discord roles are not Core permissions
 
 ## Data ownership
