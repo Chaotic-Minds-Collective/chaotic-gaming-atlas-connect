@@ -65,7 +65,8 @@ test("rejects malformed envelope, unsupported game and missing required metadata
   assert.throws(() => normalizeCoreChatEvent(event({ game: "7dtd" })), /game must be atlas/);
   for (const overrides of [
     { eventRecordId: "" }, { eventId: "" }, { clusterId: "" },
-    { serverId: "" }, { occurredAt: "yesterday" }, { payload: [] }
+    { serverId: "" }, { occurredAt: "yesterday" },
+    { occurredAt: "2026-02-30T18:00:00Z" }, { payload: [] }
   ]) assert.throws(() => normalizeCoreChatEvent(event(overrides)));
 });
 
