@@ -74,7 +74,7 @@ test("rejects malformed IDs, timestamps, content and scope", () => {
   assert.throws(() => message({ occurredAt: "2026-02-30T18:00:00Z" }), /occurredAt/);
   assert.throws(() => message({ scope: { ...base.scope, gridId: "" } }), /scope.gridId/);
   assert.throws(() => message({ content: " " }), /content/);
-  assert.throws(() => message({ content: "x".repeat(2_001) }), /2,000/);
+  assert.throws(() => message({ content: "x".repeat(2_001) }), /2000/);
   assert.throws(() => message({ content: "bad\u0000message" }), /NUL/);
 });
 
