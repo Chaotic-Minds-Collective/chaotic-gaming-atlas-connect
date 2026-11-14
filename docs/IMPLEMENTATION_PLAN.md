@@ -43,6 +43,16 @@ Core owns identity, authorization, audit and durable events. Connect owns channe
 
 This milestone only validates message metadata and relay eligibility. It does not send messages, connect to Discord, persist state, schedule announcements or claim native ATLAS callback compatibility.
 
+### Implemented: Core public chat event adapter
+
+- Normalize Core's documented `game.event.received` outbox wrapper for `chat.global` and `chat.tribe`.
+- Require Core event record ID, provider event ID, timestamp, cluster/server scope and ATLAS game identity.
+- Preserve nullable legacy grid/correlation metadata without inventing values.
+- Preserve the provider-specific inner payload as detached, immutable JSON.
+- Add tests for supported event types, unsupported types, missing metadata, timestamp normalization and payload immutability.
+
+Core's current published contract does not specify canonical inner chat fields or Connect origin/destination channel mapping. This adapter deliberately does not invent message body, author, channel or Discord routing. Those contracts must be defined before delivery work.
+
 ## Technical gates and risks
 
 - Core currently accepts normalized `chat.global` and `chat.tribe` game events. Durable announcement events, channel preferences and delivery receipts still need an explicit Core contract.
@@ -65,4 +75,4 @@ This milestone only validates message metadata and relay eligibility. It does no
 
 ## Current readiness
 
-The public message envelope and pure relay policy are implemented and covered by automated tests. Core event/outbox integration, Discord delivery, durable deduplication and native ATLAS callback compatibility remain future work.
+The public message envelope, pure relay policy and Core public-chat outbox wrapper adapter are implemented. Canonical chat payload fields, Connect channel routing, durable delivery receipts, Discord delivery and native ATLAS callback compatibility remain future work.
