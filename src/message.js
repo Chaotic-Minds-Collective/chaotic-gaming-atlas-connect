@@ -187,3 +187,26 @@ export const CONNECT_MESSAGE_DEFAULTS = Object.freeze({
   maxMessageLength: MAX_MESSAGE_LENGTH,
   maxRelayHops: MAX_RELAY_HOPS
 });
+
+/**
+ * Return an updated envelope after the caller has successfully delivered to
+ * an allowlisted destination. Callers are responsible for persisting this
+ * returned relay trace with their durable delivery record.
+ */
+export function recordConnectRelayDelivery(message, destination, allowedDestinations) {
+  const normalizedMessage = normalizeConnectMessage(message);
+  const target = normalizeTarget(destination, "destination");
+  const eligibility = evaluateConnectRelay(
+    normalizedMessage,
+    target,
+    allowedDestinations
+  );
+  if (!eligibility.allowed) {
+    throw new Error(`relay delivery cannot be recorded: ${eligibility.reason}`);
+  }
+
+  return normalizeConnectMessage({
+    ...normalizedMessage,
+    relayPath: [...normalizedMessage.relayPath, target]
+  });
+}
