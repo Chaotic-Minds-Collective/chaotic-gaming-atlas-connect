@@ -1,4 +1,5 @@
 const CHAT_EVENT_TYPES = new Set(["chat.global", "chat.tribe"]);
+const ISO_DATE_TIME = /^(\d{4})-(\d{2})-(\d{2})T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d+)?(Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/;
 
 function record(value, field) {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
@@ -17,11 +18,26 @@ function optionalString(value, field) {
   return requiredString(value, field);
 }
 function normalizeTimestamp(value) {
-  if (typeof value !== "string" || !Number.isFinite(Date.parse(value)) ||
-      !/^\d{4}-\d{2}-\d{2}T.*(?:Z|[+-]\d{2}:\d{2})$/.test(value)) {
+  const match = typeof value === "string" ? ISO_DATE_TIME.exec(value) : null;
+  if (!match) {
     throw new TypeError("payload.occurredAt must be an ISO date-time with timezone");
   }
-  return new Date(value).toISOString();
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const daysInMonth = [
+    31,
+    year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0) ? 29 : 28,
+    31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+  ];
+  if (month < 1 || month > 12 || day < 1 || day > daysInMonth[month - 1]) {
+    throw new TypeError("payload.occurredAt must be a valid ISO date-time with timezone");
+  }
+  const parsed = Date.parse(value);
+  if (!Number.isFinite(parsed)) {
+    throw new TypeError("payload.occurredAt must be a valid ISO date-time with timezone");
+  }
+  return new Date(parsed).toISOString();
 }
 function immutableJsonObject(value, field) {
   record(value, field);
