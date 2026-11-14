@@ -149,11 +149,8 @@ export function normalizeConnectMessage(input) {
  * message's origin/relay history. This function never sends a message.
  */
 export function evaluateConnectRelay(message, destination, allowedDestinations) {
-  record(message, "message");
-  if (message.schemaVersion !== 1) {
-    throw new TypeError("message.schemaVersion must be 1");
-  }
-  const origin = normalizeTarget(message.origin, "message.origin");
+  const normalizedMessage = normalizeConnectMessage(message);
+  const origin = normalizedMessage.origin;
   const target = normalizeTarget(destination, "destination");
   if (!Array.isArray(allowedDestinations)) {
     throw new TypeError("allowedDestinations must be an array");
@@ -169,7 +166,7 @@ export function evaluateConnectRelay(message, destination, allowedDestinations) 
     return Object.freeze({ allowed: false, reason: "destination is the message origin" });
   }
 
-  const relayPath = message.relayPath ?? [];
+  const relayPath = normalizedMessage.relayPath;
   if (!Array.isArray(relayPath)) {
     throw new TypeError("message.relayPath must be an array");
   }
