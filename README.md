@@ -15,17 +15,10 @@ This Chaotic Minds Gaming (CMG) module extends [CMG Core](https://github.com/Cha
 
 ## Current implementation
 
-The first server-independent milestone is implemented in `src/message.js`:
+- `src/message.js`: immutable schema-v1 public message envelope and pure relay policy. It validates scope, origin, channel type, provider tribe ID, content, allowlists, loop history and a two-hop ceiling. It does not send messages.
+- `src/core-event.js`: normalizes Core's documented `game.event.received` outbox wrapper for `chat.global` and `chat.tribe`. It preserves the Core record/event IDs, timestamp, correlation ID, cluster/grid/server scope and an immutable copy of the provider payload.
 
-- Normalizes public global, grid, tribe and announcement messages into an immutable schema-v1 envelope.
-- Requires explicit cluster/grid/server scope and origin channel identity.
-- Requires a provider tribe ID for tribe messages; display names are not identifiers.
-- Excludes private/direct messages from the relay contract.
-- Requires an explicit destination allowlist before relay eligibility is granted.
-- Blocks relays to the origin or previously visited destinations, caps relay history at two hops, and returns a new envelope to record a successful delivery.
-- Validates timestamps, IDs and message length; no message is sent by this policy layer.
-
-This is a pure message and relay-policy contract. It does not connect to Discord, poll ATLAS, persist messages, schedule announcements, or invoke native game callbacks.
+Core's published contract defines the outbox wrapper and normalized event types, but does not define a canonical inner chat payload, player display identity, or Connect destination/origin channel mapping. The adapter therefore preserves the inner payload as opaque JSON and does not fabricate message content, author identity, or channel routing.
 
 ## Architecture and dependencies
 
