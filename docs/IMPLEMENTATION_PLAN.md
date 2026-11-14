@@ -37,7 +37,7 @@ Core owns identity, authorization, audit and durable events. Connect owns channe
 - Added an immutable schema-v1 envelope for global, grid, tribe and announcement messages.
 - Required explicit cluster/grid/server scope and origin channel identity.
 - Required a provider tribe ID for tribe messages and excluded private/direct messages.
-- Added explicit destination allowlisting, origin/visited-destination loop checks and a two-hop limit.
+- Added explicit destination allowlisting, origin/visited-destination loop checks, a two-hop limit and immutable relay-trace recording after successful delivery.
 - Added strict timestamp, identifier and message-length validation.
 - Added dependency-free Node.js tests and a Node 22 GitHub Actions workflow.
 
