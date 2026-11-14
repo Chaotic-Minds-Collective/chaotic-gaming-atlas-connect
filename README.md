@@ -22,7 +22,7 @@ The first server-independent milestone is implemented in `src/message.js`:
 - Requires a provider tribe ID for tribe messages; display names are not identifiers.
 - Excludes private/direct messages from the relay contract.
 - Requires an explicit destination allowlist before relay eligibility is granted.
-- Blocks relays to the origin or previously visited destinations and caps relay history at two hops.
+- Blocks relays to the origin or previously visited destinations, caps relay history at two hops, and returns a new envelope to record a successful delivery.
 - Validates timestamps, IDs and message length; no message is sent by this policy layer.
 
 This is a pure message and relay-policy contract. It does not connect to Discord, poll ATLAS, persist messages, schedule announcements, or invoke native game callbacks.
