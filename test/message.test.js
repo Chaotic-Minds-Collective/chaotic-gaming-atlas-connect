@@ -2,7 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   evaluateConnectRelay,
-  normalizeConnectMessage
+  normalizeConnectMessage,
+  recordConnectRelayDelivery
 } from "../src/message.js";
 
 const base = {
@@ -159,4 +160,30 @@ test("rejects an invalid relay destination and non-array allowlist", () => {
     platform: "discord",
     channelId: "channel-1"
   }, null), /allowedDestinations/);
+});
+
+test("records a successful relay in a new immutable envelope", () => {
+  const original = message();
+  const destination = { platform: "discord", channelId: "discord-announcements" };
+  const updated = recordConnectRelayDelivery(
+    original,
+    destination,
+    [destination]
+  );
+
+  assert.deepEqual(original.relayPath, []);
+  assert.deepEqual(updated.relayPath, [destination]);
+  assert.ok(Object.isFrozen(updated));
+  assert.equal(evaluateConnectRelay(updated, destination, [destination]).allowed, false);
+});
+
+test("does not record a relay that is not eligible", () => {
+  assert.throws(
+    () => recordConnectRelayDelivery(
+      message(),
+      { platform: "discord", channelId: "unapproved" },
+      []
+    ),
+    /not allowlisted/
+  );
 });
